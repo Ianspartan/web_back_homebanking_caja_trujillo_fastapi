@@ -22,11 +22,12 @@ class Settings(BaseSettings):
 
     # Frontends permitidos
     CORS_ORIGINS: str = (
-     "http://localhost:5173,"
-     "http://localhost:5174,"
-     "https://core-caja-trujillo.vercel.app,"
-     "https://homebanking-caja-trujillo.vercel.app"
-)
+        "http://localhost:5173,"
+        "http://localhost:5174,"
+        "https://web-front-homebanking-caja-trujillo.vercel.app,"
+        "https://web-front-homebanking-caja-trujillo-git-16e84f-ianspartans-projects.vercel.app,"
+        "https://web-front-homebanking-caja-trujillo-react-k272w9zg.vercel.app"
+    )
 
     @property
     def cors_origins_list(self) -> list[str]:
