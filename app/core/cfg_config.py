@@ -21,7 +21,12 @@ class Settings(BaseSettings):
     PORT: int = 8002
 
     # Frontends permitidos
-    CORS_ORIGINS: str = "http://localhost:5173,http://localhost:5174"
+    CORS_ORIGINS: str = (
+     "http://localhost:5173,"
+     "http://localhost:5174,"
+     "https://core-caja-trujillo.vercel.app,"
+     "https://homebanking-caja-trujillo.vercel.app"
+)
 
     @property
     def cors_origins_list(self) -> list[str]:
