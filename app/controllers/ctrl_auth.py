@@ -9,13 +9,25 @@ from app.repositories import repo_auth
 
 
 def login(conn: Connection, username: str, password: str) -> dict:
+    # ================= DEBUG =================
+    print("=" * 60)
+    print("LOGIN HOMEBANKING")
+    print(f"USERNAME RECIBIDO: {username}")
+    print(f"PASSWORD RECIBIDO: {password}")
+    print("=" * 60)
+    # =========================================
+
     usuario = repo_auth.buscar_usuario_por_username(conn, username)
 
     if usuario is None:
+        print("❌ Usuario no encontrado")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Credenciales inválidas",
         )
+
+    print(f"✅ Usuario encontrado: {usuario['username']}")
+    print(f"Hash almacenado: {usuario['password_hash']}")
 
     if usuario["activo"] != "S":
         raise HTTPException(
@@ -29,7 +41,10 @@ def login(conn: Connection, username: str, password: str) -> dict:
             detail="Usuario bloqueado por intentos fallidos. Contacte a Caja Trujillo.",
         )
 
-    if not verificar_password(password, usuario["password_hash"]):
+    password_valida = verificar_password(password, usuario["password_hash"])
+    print(f"¿Password válida?: {password_valida}")
+
+    if not password_valida:
         intentos = repo_auth.registrar_login_fallido(conn, usuario["pkusuario"])
         restantes = max(0, repo_auth.MAX_INTENTOS - intentos)
 
